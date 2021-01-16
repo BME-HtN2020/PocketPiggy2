@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_to_do"
+        android:icon="@drawable/nav_to_do"
+        android:title="@string/icon_todo" />
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/nav_home"
+        android:title="@string/icon_home" />
+
+    <item
+        android:id="@+id/navigation_goals"
+        android:icon="@drawable/nav_goal"
+        android:title="@string/icon_goals" />
+
+</menu>
