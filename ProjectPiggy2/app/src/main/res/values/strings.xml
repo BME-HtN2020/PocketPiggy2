@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">ProjectPiggy2</string>
+    <string name="app_name">PocketPiggy</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_continue">Continue</string>
+    <string name="button_add">Add</string>
+    <string name="tap_continue">Tap anywhere to continue</string>
+    <string name="onboarding1">Budgeting made fun!</string>
+    <string name="onboarding2">Learn to save money</string>
+    <string name="onboarding3">Reach your goals</string>
+    <string name="onboarding_sign_up">Already have an account? Sign up</string>
+    <string name="set_up_title">Hey there!</string>
+    <string name="set_up_text">Give your device to a parent to complete setup</string>
+    <string name="parent_pin">Create parent pin</string>
+    <string name="allowance_title">Allowance</string>
+    <string name="allowance_amount">Amount</string>
+    <string name="allowance_frequency">Frequency</string>
+    <string name="allowance_frequency_weekly">Weekly</string>
+    <string name="allowance_frequency_monthly">Monthly</string>
+    <string name="chores_title">Add chore details</string>
+    <string name="chores_name">Chore name</string>
+    <string name="chores_name_ex">Ex. Washing dishes</string>
+    <string name="chores_frequency">Chore frequency</string>
+    <string name="chores_frequency_ex">Ex. Washing dishes</string>
+    <string name="chores_bonus">Bonus upon completion</string>
+    <string name="set_up_child_title">Let’s set up your profile!</string>
+    <string name="set_up_child_query">What’s your name?</string>
+    <string name="home_hey">Hey</string>
+    <string name="home_exclaim">!</string>
+    <string name="home_balance">YOUR BALANCE:</string>
+    <string name="home_goalds">YOUR GOALS:</string>
+    <string name="todo_title">’s to-do list</string>
+    <string name="icon_todo">to-do</string>
+    <string name="icon_home">home</string>
+    <string name="icon_goals">goals</string>
 </resources>
