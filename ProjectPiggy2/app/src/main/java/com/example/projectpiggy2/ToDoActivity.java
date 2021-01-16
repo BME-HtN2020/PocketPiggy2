@@ -9,11 +9,15 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.renderscript.ScriptGroup;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -50,14 +54,29 @@ public class ToDoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_task:
+                LinearLayout layout = new LinearLayout(this);
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layout.setLayoutParams(params);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
                 final EditText titleEdit = new EditText(this);
-                Spinner dropdown = findViewById(R.id.spinner1);
+                Spinner dropdown = new Spinner(ToDoActivity.this);
+                final EditText amountEdit = new EditText(this);
+                amountEdit.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                amountEdit.addTextChangedListener(new NumberTextWatcher(amountEdit, "#,###"));
+
                 String[] items = {"1 Day", "4 Day", "1 Week"};
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
                 dropdown.setAdapter(arrayAdapter);
+
+                layout.addView(titleEdit);
+                layout.addView(dropdown);
+                layout.addView(amountEdit);
+
                 AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setTitle("Add a new task").setMessage("What do you want to do next?").setView(titleEdit)
-                        .setView(dropdown)
+                        .setTitle("Add a new task").setMessage("What do you want to do next?")
+                        .setView(layout)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

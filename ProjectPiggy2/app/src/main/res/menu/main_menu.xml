@@ -6,13 +6,5 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="Add Task"
         app:showAsAction="always" />
-
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown">
-    </Spinner>
 </menu>
 
