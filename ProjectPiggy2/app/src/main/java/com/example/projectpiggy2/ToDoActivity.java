@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.projectpiggy2.task_database.TaskContract;
@@ -49,13 +50,18 @@ public class ToDoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_task:
-                final EditText taskEdit = new EditText(this);
+                final EditText titleEdit = new EditText(this);
+                Spinner dropdown = findViewById(R.id.spinner1);
+                String[] items = {"1 Day", "4 Day", "1 Week"};
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+                dropdown.setAdapter(arrayAdapter);
                 AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setTitle("Add a new task").setMessage("What do you want to do next?").setView(taskEdit)
+                        .setTitle("Add a new task").setMessage("What do you want to do next?").setView(titleEdit)
+                        .setView(dropdown)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String task = String.valueOf(taskEdit.getText());
+                                String task = String.valueOf(titleEdit.getText());
                                 SQLiteDatabase db = taskHelper.getWritableDatabase();
                                 ContentValues values = new ContentValues();
                                 values.put(TaskContract.TaskEntry.COL_TASK_TITLE, task);
