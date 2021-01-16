@@ -61,13 +61,13 @@ public class DbAdapter {
         return count;
     }
 
-    public long insertGoal(String name, String amountSaved, String totalAmount, String isReached) {
+    public long insertGoal(String name, String totalAmount) {
         SQLiteDatabase db = goalDbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(goalDbHelper.NAME, name);
-        contentValues.put(goalDbHelper.AMOUNT_SAVED, amountSaved);
+        contentValues.put(goalDbHelper.AMOUNT_SAVED, "$0.00");
         contentValues.put(goalDbHelper.TOTAL_AMOUNT, totalAmount);
-        contentValues.put(goalDbHelper.IS_REACHED, isReached);
+        contentValues.put(goalDbHelper.IS_REACHED, "false");
         long id = db.insert(goalDbHelper.TABLE_NAME, null , contentValues);
         return id;
     }
@@ -97,24 +97,25 @@ public class DbAdapter {
         return  count;
     }
 
-    public int updateGoal(String id, String amountSaved, String isReached)
+    public int updateGoal(String id, String amountSaved, String totalAmount, String isReached)
     {
         SQLiteDatabase db = goalDbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(goalDbHelper.AMOUNT_SAVED,amountSaved);
+        contentValues.put(goalDbHelper.TOTAL_AMOUNT,totalAmount);
         contentValues.put(goalDbHelper.IS_REACHED, isReached);
         String[] whereArgs= {id};
         int count =db.update(goalDbHelper.TABLE_NAME,contentValues, goalDbHelper.UID+" = ?",whereArgs );
         return count;
     }
 
-    public long insertChore(String title, String details, String amount, String isAccomplished) {
+    public long insertChore(String title, String details, String amount) {
         SQLiteDatabase db = choreDbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(choreDbHelper.TITLE, title);
         contentValues.put(choreDbHelper.DETAILS, details);
         contentValues.put(choreDbHelper.AMOUNT, amount);
-        contentValues.put(choreDbHelper.IS_ACCOMPLISHED, isAccomplished);
+        contentValues.put(choreDbHelper.IS_ACCOMPLISHED, "false");
         long id = db.insert(choreDbHelper.TABLE_NAME, null , contentValues);
         return id;
     }
@@ -152,25 +153,32 @@ public class DbAdapter {
         return count;
     }
 
-    public long insertUser(String email, String name, String account, String chores, String goal) {
+    public long insertUser(String email, String pin, String name) {
         SQLiteDatabase db = userDbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(userDbHelper.EMAIL, email);
+        contentValues.put(userDbHelper.PIN, pin);
         contentValues.put(userDbHelper.NAME, name);
-        contentValues.put(userDbHelper.ACCOUNT, account);
-        contentValues.put(userDbHelper.CHORES, chores);
-        contentValues.put(userDbHelper.GOAL, goal);
+
+        long accountId = insertAccountData();
+
+        contentValues.put(userDbHelper.ACCOUNT, accountId);
+        contentValues.put(userDbHelper.CHORES, "");
+        contentValues.put(userDbHelper.GOAL, "");
+
         long id = db.insert(userDbHelper.TABLE_NAME, null , contentValues);
         return id;
     }
 
     public User getUserData(String id)
     {
-        SQLiteDatabase db = userDbHelper.getWritableDatabase();
-        String[] columns = {userDbHelper.UID,userDbHelper.NAME,userDbHelper.ACCOUNT,userDbHelper.CHORES,userDbHelper.GOAL};
+        SQLiteDatabase db = userDbHelper.getReadableDatabase();
+        String[] columns = {userDbHelper.UID,userDbHelper.PIN,userDbHelper.NAME,
+                userDbHelper.ACCOUNT,userDbHelper.CHORES,userDbHelper.GOAL};
         Cursor cursor =db.query(userDbHelper.TABLE_NAME,columns,userDbHelper.UID + "=" + id,
                 null,null,null,null);
         String email = cursor.getString(cursor.getColumnIndex(userDbHelper.EMAIL));
+        String pin = cursor.getString(cursor.getColumnIndex(userDbHelper.PIN));
         String name =cursor.getString(cursor.getColumnIndex(userDbHelper.NAME));
         String account = cursor.getString(cursor.getColumnIndex(userDbHelper.ACCOUNT));
         String chores = cursor.getString(cursor.getColumnIndex(userDbHelper.CHORES));
@@ -178,13 +186,46 @@ public class DbAdapter {
 
         Account userAccount = getAccountData(account);
         List<Chore> userChores = new ArrayList<Chore>();
-        String[] choreIds = DataWrapper.unwrap(chores);
+        String[] choreIds = com.example.pocketpiggy.DataWrapper.unwrap(chores);
         for (int i = 0; i < choreIds.length; i++) {
             userChores.add(getChoreData(choreIds[i]));
         }
         Goal userGoal = getGoalData(goal);
 
-        return new User(email, name, userAccount, userChores, userGoal);
+        return new User(email, pin, name, userAccount, userChores, userGoal);
+    }
+
+    public String getUserAccountId(String id) {
+        SQLiteDatabase db = userDbHelper.getReadableDatabase();
+        String[] columns = {userDbHelper.ACCOUNT};
+
+        Cursor cursor = db.query(userDbHelper.TABLE_NAME, columns, userDbHelper.UID+"="+id,
+                null, null, null, null);
+        String account = cursor.getString(cursor.getColumnIndex(userDbHelper.ACCOUNT));
+
+        return account;
+    }
+
+    public String getUserChoresId(String id) {
+        SQLiteDatabase db = userDbHelper.getReadableDatabase();
+        String[] columns = {userDbHelper.CHORES};
+
+        Cursor cursor = db.query(userDbHelper.TABLE_NAME, columns, userDbHelper.UID+"="+id,
+                null, null, null, null);
+        String chores = cursor.getString(cursor.getColumnIndex(userDbHelper.CHORES));
+
+        return chores;
+    }
+
+    public String getUserGoalId(String id) {
+        SQLiteDatabase db = userDbHelper.getReadableDatabase();
+        String[] columns = {userDbHelper.GOAL};
+
+        Cursor cursor = db.query(userDbHelper.TABLE_NAME, columns, userDbHelper.UID+"="+id,
+                null, null, null, null);
+        String goal = cursor.getString(cursor.getColumnIndex(userDbHelper.GOAL));
+
+        return goal;
     }
 
     public int deleteUser(String id)
@@ -192,7 +233,37 @@ public class DbAdapter {
         SQLiteDatabase db = choreDbHelper.getWritableDatabase();
         String[] whereArgs ={id};
 
-        int count =db.delete(userDbHelper.TABLE_NAME ,userDbHelper.UID+" = ?",whereArgs);
+        String accountId = getUserAccountId(id);
+        String choresId = getUserChoresId(id);
+        String goalId = getUserGoalId(id);
+
+        if (!accountId.isEmpty()) {
+            int accountDeleteResult = deleteAccount(accountId);
+            if (accountDeleteResult == 0) {
+                // some kind of error occurred when deleting the account
+                return 0;
+            }
+        }
+        if (!choresId.isEmpty()) {
+            String[] choresIds = com.example.pocketpiggy.DataWrapper.unwrap(choresId);
+            for (int i = 0; i < choresIds.length; i++) {
+                int choreDeleteResult = deleteChore(choresIds[i]);
+                if (choreDeleteResult == 0) {
+                    // some kind of error occurred when deleting the chore
+                    // implement logic to add the deleted account back in
+                    return 0;
+                }
+            }
+        }
+        if (!goalId.isEmpty()) {
+            int goalDeleteResult = deleteGoal(goalId);
+            if (goalDeleteResult == 0) {
+                // some kind of error occurred when deleting the goal
+                return 0;
+            }
+        }
+
+        int count = db.delete(userDbHelper.TABLE_NAME ,userDbHelper.UID+" = ?",whereArgs);
         return  count;
     }
 
@@ -204,17 +275,37 @@ public class DbAdapter {
         contentValues.put(userDbHelper.CHORES,chores);
         contentValues.put(userDbHelper.GOAL,goal);
         String[] whereArgs= {id};
-        int count =db.update(userDbHelper.TABLE_NAME,contentValues, userDbHelper.UID+" = ?",whereArgs );
+        int count = db.update(userDbHelper.TABLE_NAME,contentValues, userDbHelper.UID+" = ?",whereArgs );
+        return count;
+    }
+
+    // called when a new chore is added or when a chore is deleted
+    public int updateUserChores(String id, String chores) {
+        SQLiteDatabase db = userDbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(userDbHelper.CHORES,chores);
+        String[] whereArgs= {id};
+        int count = db.update(userDbHelper.TABLE_NAME,contentValues, userDbHelper.UID+" = ?",whereArgs );
+        return count;
+    }
+
+    // called when a new goal is added or when a goal is deleted
+    public int updateUserGoal(String id, String goal) {
+        SQLiteDatabase db = userDbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(userDbHelper.GOAL,goal);
+        String[] whereArgs= {id};
+        int count = db.update(userDbHelper.TABLE_NAME,contentValues, userDbHelper.UID+" = ?",whereArgs );
         return count;
     }
 
     static class AccountDbHelper extends SQLiteOpenHelper
     {
-        private static final String DATABASE_NAME = "myDatabase";    // Database Name
-        private static final String TABLE_NAME = "Account";   // Table Name
-        private static final int DATABASE_Version = 1;    // Database Version
-        private static final String UID="id";     // Column I (Primary Key)
-        private static final String BALANCE = "balance";    //Column II
+        private static final String DATABASE_NAME = "pocketPiggyDatabase";
+        private static final String TABLE_NAME = "Account";
+        private static final int DATABASE_Version = 1;
+        private static final String UID="id";
+        private static final String BALANCE = "balance";
         private static final String CREATE_TABLE = "CREATE TABLE "+TABLE_NAME+
                 " ("+UID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+BALANCE+" VARCHAR(255));";
         private static final String DROP_TABLE ="DROP TABLE IF EXISTS "+TABLE_NAME;
@@ -247,11 +338,11 @@ public class DbAdapter {
 
     static class GoalDbHelper extends SQLiteOpenHelper
     {
-        private static final String DATABASE_NAME = "myDatabase";    // Database Name
-        private static final String TABLE_NAME = "Goal";   // Table Name
-        private static final int DATABASE_Version = 1;    // Database Version
-        private static final String UID="id";     // Column I (Primary Key)
-        private static final String NAME = "name";    //Column II
+        private static final String DATABASE_NAME = "pocketPiggyDatabase";
+        private static final String TABLE_NAME = "Goal";
+        private static final int DATABASE_Version = 1;
+        private static final String UID="id";
+        private static final String NAME = "name";
         private static final String AMOUNT_SAVED = "amount_saved";
         private static final String TOTAL_AMOUNT = "total_amount";
         private static final String IS_REACHED = "is_reached";
@@ -288,11 +379,11 @@ public class DbAdapter {
 
     static class ChoreDbHelper extends SQLiteOpenHelper
     {
-        private static final String DATABASE_NAME = "myDatabase";    // Database Name
-        private static final String TABLE_NAME = "Chore";   // Table Name
-        private static final int DATABASE_Version = 1;    // Database Version
-        private static final String UID="id";     // Column I (Primary Key)
-        private static final String TITLE = "title";    //Column II
+        private static final String DATABASE_NAME = "pocketPiggyDatabase";
+        private static final String TABLE_NAME = "Chore";
+        private static final int DATABASE_Version = 1;
+        private static final String UID="id";
+        private static final String TITLE = "title";
         private static final String DETAILS = "details";
         private static final String AMOUNT = "amount";
         private static final String IS_ACCOMPLISHED = "is_accomplished";
@@ -329,18 +420,20 @@ public class DbAdapter {
 
     static class UserDbHelper extends SQLiteOpenHelper
     {
-        private static final String DATABASE_NAME = "myDatabase";    // Database Name
-        private static final String TABLE_NAME = "User";   // Table Name
-        private static final int DATABASE_Version = 1;    // Database Version
-        private static final String UID="id";     // Column I (Primary Key)
+        private static final String DATABASE_NAME = "pocketPiggyDatabase";
+        private static final String TABLE_NAME = "User";
+        private static final int DATABASE_Version = 1;
+        private static final String UID="id";
         private static final String EMAIL = "email";
-        private static final String NAME = "name";    //Column II
+        private static final String PIN = "pin";
+        private static final String NAME = "name";
         private static final String ACCOUNT = "account";
         private static final String CHORES = "chores";
         private static final String GOAL = "goal";
-        private static final String CREATE_TABLE = "CREATE TABLE "+TABLE_NAME+
-                " ("+UID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+NAME+" VARCHAR(255) ," + ACCOUNT +
-                " VARCHAR(255) ," + CHORES + " VARCHAR(255) ," + GOAL + " VARCHAR(255));";
+        private static final String CREATE_TABLE = "CREATE TABLE "+ TABLE_NAME +
+                " ("+UID+" INTEGER PRIMARY KEY AUTOINCREMENT, " + EMAIL + " VARCHAR(255) ," + PIN +
+                " VARCHAR(255) ," + NAME + " VARCHAR(255) ," + ACCOUNT + " VARCHAR(255) ," + CHORES +
+                " VARCHAR(255) ," + GOAL + " VARCHAR(255));";
         private static final String DROP_TABLE ="DROP TABLE IF EXISTS "+TABLE_NAME;
         private Context context;
 
