@@ -5,21 +5,24 @@ import java.util.*;
 public class User {
     String id;
     String email;
+    String pin;
     String name;
     Account account;
     List<Chore> chores;
     Goal goal;
 
-    public User(String email, String name) {
+    public User(String email, String pin, String name) {
         this.email = email;
+        this.pin = pin;
         this.name = name;
         this.account = new Account();
         this.chores = new ArrayList<Chore>();
         this.goal = null;
     }
 
-    public User(String email, String name, Account account, List<Chore> chores, Goal goal) {
+    public User(String email, String pin, String name, Account account, List<Chore> chores, Goal goal) {
         this.email = email;
+        this.pin = pin;
         this.name = name;
         this.account = account;
         this.chores = chores;
@@ -29,6 +32,10 @@ public class User {
     public String getId() {
         return this.id;
     }
+
+    public String getEmail() { return this.email; }
+
+    public String getPin() { return this.pin; }
 
     public String getName() {
         return this.name;
@@ -69,5 +76,9 @@ public class User {
         {
             if (chores.get(i).getTitle().equals(choreName)) chores.get(i).setAccomplished();
         }
+    }
+
+    public boolean verify(String pin) {
+        return pin.equals(this.pin);
     }
 }
