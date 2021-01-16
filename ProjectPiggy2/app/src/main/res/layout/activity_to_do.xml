@@ -10,7 +10,7 @@
     tools:context="com.example.projectpiggy2.ToDoActivity">
 
     <ListView
-        android:id="@+id/list_todo"
+        android:id="@+id/list_to_do"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>

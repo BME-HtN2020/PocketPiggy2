@@ -23,7 +23,7 @@ import com.example.projectpiggy2.task_database.TaskDatabaseHelper;
 import java.util.ArrayList;
 
 public class ToDoActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "ToDoActivity";
     private TaskDatabaseHelper taskHelper;
     private ListView TaskList;
     private ArrayAdapter<String> arrAdapter;
@@ -31,10 +31,10 @@ public class ToDoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_to_do);
 
         taskHelper = new TaskDatabaseHelper(this);
-        TaskList = (ListView) findViewById(R.id.list_todo);
+        TaskList = (ListView) findViewById(R.id.list_to_do);
 
         updateUI();
     }
