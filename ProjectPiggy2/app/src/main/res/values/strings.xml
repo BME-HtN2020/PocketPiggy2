@@ -32,6 +32,9 @@
     <string name="icon_todo">to-do</string>
     <string name="icon_home">home</string>
     <string name="icon_goals">goals</string>
+    <string name="your_balance">YOUR BALANCE:</string>
+    <string name="goals_summary">GOALS:</string>
+    <string name="money_left">AMOUNT TO GO:</string>
 
     <string-array name="frequency_array">
         <item>Weekly</item>
