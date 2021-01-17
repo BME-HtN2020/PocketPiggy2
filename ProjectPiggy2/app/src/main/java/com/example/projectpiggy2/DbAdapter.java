@@ -133,6 +133,15 @@ public class DbAdapter {
         return new Chore(title, details, PriceFormatter.unformat(amount), Boolean.parseBoolean(isAccomplished));
     }
 
+    public String getChoreIdByTitle(String title) {
+        SQLiteDatabase db = choreDbHelper.getWritableDatabase();
+        String[] columns = {choreDbHelper.UID};
+        Cursor cursor =db.query(choreDbHelper.TABLE_NAME,columns,choreDbHelper.TITLE + "=" + title,
+                null,null,null,null);
+        String id =cursor.getString(cursor.getColumnIndex(choreDbHelper.UID));
+        return id;
+    }
+
     public int deleteChore(String id) {
         SQLiteDatabase db = choreDbHelper.getWritableDatabase();
         String[] whereArgs ={id};
@@ -150,10 +159,9 @@ public class DbAdapter {
         return count;
     }
 
-    public long insertUser(String email, String pin, String name) {
+    public long insertUser(String pin, String name) {
         SQLiteDatabase db = userDbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(userDbHelper.EMAIL, email);
         contentValues.put(userDbHelper.PIN, pin);
         contentValues.put(userDbHelper.NAME, name);
 
@@ -188,7 +196,7 @@ public class DbAdapter {
         }
         Goal userGoal = getGoalData(goal);
 
-        return new User(email, pin, name, userAccount, userChores, userGoal);
+        return new User(pin, name, userAccount, userChores, userGoal, id);
     }
 
     public String getUserAccountId(String id) {
