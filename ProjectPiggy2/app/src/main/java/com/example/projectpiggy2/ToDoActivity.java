@@ -27,6 +27,7 @@ import com.example.projectpiggy2.task_database.TaskContract;
 import com.example.projectpiggy2.task_database.TaskDatabaseHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ToDoActivity extends AppCompatActivity {
     private static final String TAG = "ToDoActivity";
@@ -57,22 +58,6 @@ public class ToDoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_task:
-//                LinearLayout layout = new LinearLayout(this);
-//
-//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                layout.setLayoutParams(params);
-//                layout.setOrientation(LinearLayout.VERTICAL);
-//
-//                final EditText titleEdit = new EditText(this);
-//                Spinner dropdown = new Spinner(ToDoActivity.this);
-//                final EditText amountEdit = new EditText(this);
-//
-//
-//
-//                layout.addView(titleEdit);
-//                layout.addView(dropdown);
-//                layout.addView(amountEdit);
-
                 View choresLayout = getLayoutInflater().inflate(R.layout.chores, null);
                 LinearLayout layout = choresLayout.findViewById(R.id.choresLayout);
                 EditText titleEdit = choresLayout.findViewById(R.id.titleEditText);
@@ -94,7 +79,7 @@ public class ToDoActivity extends AppCompatActivity {
                                 String amount = String.valueOf(amountEdit.getText());
                                 String frequency = String.valueOf(dropdown.getSelectedItem().toString());
 
-                                //dbAdapter.insertChore(task, frequency, amount);
+                                UserController.createChore(task, frequency, amount);
                                 updateUI();
                             }
                         })
@@ -118,26 +103,20 @@ public class ToDoActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-//        ArrayList<String> taskList = new ArrayList<>();
-//        SQLiteDatabase db = dbAdapter.choreDbHelper.getReadableDatabase();
-//        Cursor cursor = db.query("Chore",
-//                new String[]{"id", "title", "amount"},
-//                null, null, null, null, null);
-//        while (cursor.moveToNext()) {
-//            int idx = cursor.getColumnIndex("amount");
-//            taskList.add(cursor.getString(idx));
-//        }
-//
-//        if (arrAdapter == null) {
-//            arrAdapter = new ArrayAdapter<>(this, R.layout.todo_task, R.id.title_task, taskList);
-//            TaskList.setAdapter(arrAdapter);
-//        } else {
-//            arrAdapter.clear();
-//            arrAdapter.addAll(taskList);
-//            arrAdapter.notifyDataSetChanged();
-//        }
-//
-//        cursor.close();
-//        db.close();
+        ArrayList<String> taskList = new ArrayList<>();
+        List<Chore> choreList = UserController.getCurrentUser().getChores();
+
+        for (int i = 0; i < choreList.size(); i++) {
+            taskList.add(choreList.get(i).getTitle());
+        }
+
+        if (arrAdapter == null) {
+            arrAdapter = new ArrayAdapter<>(this, R.layout.todo_task, R.id.title_task, taskList);
+            TaskList.setAdapter(arrAdapter);
+        } else {
+            arrAdapter.clear();
+            arrAdapter.addAll(taskList);
+            arrAdapter.notifyDataSetChanged();
+        }
     }
 }
