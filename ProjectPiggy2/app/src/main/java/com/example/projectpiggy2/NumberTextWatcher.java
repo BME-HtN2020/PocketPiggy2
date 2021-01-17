@@ -18,7 +18,7 @@ public class NumberTextWatcher implements TextWatcher {
     public NumberTextWatcher(EditText editText, String pattern) {
         df = new DecimalFormat(pattern);
         df.setDecimalSeparatorAlwaysShown(true);
-        dfnd = new DecimalFormat("#,###.00");
+        dfnd = new DecimalFormat("####.00");
         this.et = editText;
         hasFractionalPart = false;
     }

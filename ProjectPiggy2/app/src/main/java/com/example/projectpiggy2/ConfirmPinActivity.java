@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ConfirmPin extends AppCompatActivity {
+public class ConfirmPinActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,9 @@ public class ConfirmPin extends AppCompatActivity {
         setContentView(R.layout.activity_confirm_pin);
         int pin = getIntent().getExtras().getInt("parentPinUnconfirmed");
 
+        UserController.init(this);
         Button doneButton = (Button) findViewById(R.id.doneButton);
+        String userName = getIntent().getExtras().getString("name");
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,9 +30,13 @@ public class ConfirmPin extends AppCompatActivity {
 
                     if (pin == pinConfirm) {
                         //save pin and continue
+                        UserController.createUser(String.valueOf(pin), userName);
+                        Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(mainActivity);
 
                     } else {
-                        Intent incorrectPinIntent = new Intent(getApplicationContext(), ParentPin.class);
+                        Intent incorrectPinIntent = new Intent(getApplicationContext(), ParentPinActivity.class);
+                        incorrectPinIntent.putExtra("name", userName);
                         startActivity(incorrectPinIntent);
                     }
                 } else {

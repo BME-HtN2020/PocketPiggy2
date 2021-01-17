@@ -4,36 +4,34 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
-    DbAdapter dbAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbAdapter = new DbAdapter(this);
-    }
+        TextView balanceText = findViewById(R.id.balanceText);
+        TextView goalText = findViewById(R.id.goalsText);
+        TextView amountToGoText = findViewById(R.id.amountToGoText);
 
-    // add a user and write it to the db
-    // this function may have to be moved to the right activity (maybe sign up?)
-    public boolean addUser(View view) {
-        String email = ""; // logic to set the user email
-        String pin = ""; // logic to set the user pin
-        String name = ""; // logic to set the user name
+        String balance = UserController.getCurrentUser().getAccount().toString();
+        Goal userGoal = UserController.getCurrentUser().getGoal();
+        String goalName = "";
+        String goalTotalAmount = "";
+        String goalAmountSaved = "$0.00";
 
-        if (email.isEmpty() || pin.isEmpty() || name.isEmpty()) {
-            // please try again
-        } else {
-            long id = dbAdapter.insertUser(pin, name);
-            if (id <= 0) {
-                // unsuccessful write to the database
-                return false;
-            }
-            return true;
+        if (userGoal != null) {
+            goalName = userGoal.getName();
+            goalTotalAmount = PriceFormatter.format(userGoal.getTotalAmount());
+            goalAmountSaved = PriceFormatter.format(userGoal.getTotalAmount());
         }
 
-        return false;
+        balanceText.setText(balance);
+        goalText.setText(goalName);
+        amountToGoText.setText(goalAmountSaved);
     }
 }

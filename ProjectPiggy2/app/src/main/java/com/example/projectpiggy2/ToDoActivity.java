@@ -94,7 +94,7 @@ public class ToDoActivity extends AppCompatActivity {
                                 String amount = String.valueOf(amountEdit.getText());
                                 String frequency = String.valueOf(dropdown.getSelectedItem().toString());
 
-                                dbAdapter.insertChore(task, frequency, amount);
+                                //dbAdapter.insertChore(task, frequency, amount);
                                 updateUI();
                             }
                         })
@@ -118,26 +118,26 @@ public class ToDoActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        ArrayList<String> taskList = new ArrayList<>();
-        SQLiteDatabase db = dbAdapter.choreDbHelper.getReadableDatabase();
-        Cursor cursor = db.query("Chore",
-                new String[]{"id", "title", "amount"},
-                null, null, null, null, null);
-        while (cursor.moveToNext()) {
-            int idx = cursor.getColumnIndex("amount");
-            taskList.add(cursor.getString(idx));
-        }
-
-        if (arrAdapter == null) {
-            arrAdapter = new ArrayAdapter<>(this, R.layout.todo_task, R.id.title_task, taskList);
-            TaskList.setAdapter(arrAdapter);
-        } else {
-            arrAdapter.clear();
-            arrAdapter.addAll(taskList);
-            arrAdapter.notifyDataSetChanged();
-        }
-
-        cursor.close();
-        db.close();
+//        ArrayList<String> taskList = new ArrayList<>();
+//        SQLiteDatabase db = dbAdapter.choreDbHelper.getReadableDatabase();
+//        Cursor cursor = db.query("Chore",
+//                new String[]{"id", "title", "amount"},
+//                null, null, null, null, null);
+//        while (cursor.moveToNext()) {
+//            int idx = cursor.getColumnIndex("amount");
+//            taskList.add(cursor.getString(idx));
+//        }
+//
+//        if (arrAdapter == null) {
+//            arrAdapter = new ArrayAdapter<>(this, R.layout.todo_task, R.id.title_task, taskList);
+//            TaskList.setAdapter(arrAdapter);
+//        } else {
+//            arrAdapter.clear();
+//            arrAdapter.addAll(taskList);
+//            arrAdapter.notifyDataSetChanged();
+//        }
+//
+//        cursor.close();
+//        db.close();
     }
 }
