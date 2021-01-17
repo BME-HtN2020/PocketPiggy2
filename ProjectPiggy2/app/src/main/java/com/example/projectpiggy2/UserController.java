@@ -38,6 +38,7 @@ public class UserController {
     }
 
     public static void completeChore(String title) {
+        currentUser.doChore(title);
         String choreId = dbAdapter.getChoreIdByTitle(title);
         dbAdapter.deleteChore(choreId);
         String userId = currentUser.getId();
@@ -47,6 +48,35 @@ public class UserController {
         String[] array = (String[]) temp.toArray();
         String a = DataWrapper.wrap(array);
         dbAdapter.updateUserChores(userId, a);
+    }
+
+    public static void addAllowance(String addAmount) {
+        double amount = PriceFormatter.unformat(addAmount);
+        currentUser.giveAllowance(amount);
+        String userId = currentUser.getId();
+        String accountId = dbAdapter.getUserAccountId(userId);
+        String updatedBalance = PriceFormatter.format(currentUser.getAccount().getBalance());
+        dbAdapter.updateAccountBalance(accountId, updatedBalance);
+    }
+
+    public static void setGoal(String name, String amount) {
+        currentUser.setGoal(name, PriceFormatter.unformat(amount));
+        long goalId = dbAdapter.insertGoal(name, amount);
+        String userId = currentUser.getId();
+        dbAdapter.updateUserGoal(userId, String.valueOf(goalId));
+    }
+
+    public static void updateGoal(String amount) {
+        double goalAmount = PriceFormatter.unformat(amount);
+        currentUser.addSavings(goalAmount);
+        String userId = currentUser.getId();
+        String accountId = dbAdapter.getUserAccountId(userId);
+        String goalId = dbAdapter.getUserGoalId(userId);
+        boolean goalIsReached = currentUser.getGoal().getIsReached();
+        String updatedAccountBalance = PriceFormatter.format(currentUser.getAccount().getBalance());
+        dbAdapter.updateAccountBalance(accountId, updatedAccountBalance);
+        String updatedGoalBalance = PriceFormatter.format(currentUser.getGoal().getAmountSaved());
+        dbAdapter.updateGoalBalance(goalId, updatedGoalBalance, Boolean.toString(goalIsReached));
     }
 }
 

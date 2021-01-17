@@ -109,6 +109,16 @@ public class DbAdapter {
         return count;
     }
 
+    public int updateGoalBalance(String id, String amountSaved, String isReached) {
+        SQLiteDatabase db = goalDbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(goalDbHelper.AMOUNT_SAVED,amountSaved);
+        contentValues.put(goalDbHelper.IS_REACHED, isReached);
+        String[] whereArgs= {id};
+        int count =db.update(goalDbHelper.TABLE_NAME,contentValues, goalDbHelper.UID+" = ?",whereArgs );
+        return count;
+    }
+
     public long insertChore(String title, String details, String amount) {
         SQLiteDatabase db = choreDbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -190,7 +200,7 @@ public class DbAdapter {
 
         Account userAccount = getAccountData(account);
         List<Chore> userChores = new ArrayList<Chore>();
-        String[] choreIds = com.example.pocketpiggy.DataWrapper.unwrap(chores);
+        String[] choreIds = DataWrapper.unwrap(chores);
         for (int i = 0; i < choreIds.length; i++) {
             userChores.add(getChoreData(choreIds[i]));
         }
@@ -248,7 +258,7 @@ public class DbAdapter {
             }
         }
         if (!choresId.isEmpty()) {
-            String[] choresIds = com.example.pocketpiggy.DataWrapper.unwrap(choresId);
+            String[] choresIds = DataWrapper.unwrap(choresId);
             for (int i = 0; i < choresIds.length; i++) {
                 int choreDeleteResult = deleteChore(choresIds[i]);
                 if (choreDeleteResult == 0) {
