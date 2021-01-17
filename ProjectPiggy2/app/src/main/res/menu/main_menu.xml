@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_add_task"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="Add Task"
+        android:icon="@drawable/logo"
+        android:title="@string/todo_title"
+        app:backgroundTint="@color/purple_200"
         app:showAsAction="always" />
 </menu>
 
