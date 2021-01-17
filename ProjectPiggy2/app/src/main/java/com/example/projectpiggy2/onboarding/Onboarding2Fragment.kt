@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.projectpiggy2.R
 
+
 class Onboarding2Fragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

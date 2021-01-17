@@ -58,6 +58,8 @@
         android:text="@string/onboarding3"
         android:textColor="@color/text"
         android:textSize="36sp"
+        android:gravity="center"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.611"
