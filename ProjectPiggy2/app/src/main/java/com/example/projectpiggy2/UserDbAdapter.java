@@ -44,6 +44,17 @@ public class UserDbAdapter extends DbAdapter {
         return id;
     }
 
+    public String getUserIdByName(String name) {
+        String[] columns = {UID};
+        Cursor cursor =db.query(TABLE_NAME,columns,NAME + "='" + name + "'",
+                null,null,null,null);
+        cursor.moveToNext();
+
+        String id = cursor.getString(cursor.getColumnIndex(UID));
+
+        return id;
+    }
+
     public User getUserData(String id) {
         String[] columns = {UID,PIN,NAME,
                 ACCOUNT,CHORES,GOAL};

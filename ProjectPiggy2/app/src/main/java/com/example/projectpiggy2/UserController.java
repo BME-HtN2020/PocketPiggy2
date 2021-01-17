@@ -37,10 +37,21 @@ public class UserController {
         currentUser = b;
     }
 
+    // this method sets the currentUser field to the found user
+    // access newly found data through that static field
+    public static void findUser(String name) {
+        String id = userDbAdapter.getUserIdByName(name);
+        User user = userDbAdapter.getUserData(id);
+        currentUser = user;
+    }
+
     public static void createChore(String title, String detail, String amount) {
         long id = choreDbAdapter.insertChore(title, detail, amount);
         String choresId = userDbAdapter.getUserChoresId(currentUser.getId());
-        choresId.concat(";" + id);
+        if (!choresId.isEmpty()) {
+            choresId = choresId + ";";
+        }
+        choresId = choresId + id;
         userDbAdapter.updateUserChores(currentUser.getId(), choresId);
         currentUser.assignChore(title, detail, PriceFormatter.unformat(amount));
     }
@@ -48,14 +59,16 @@ public class UserController {
     public static void completeChore(String title) {
         currentUser.doChore(title);
         String choreId = choreDbAdapter.getChoreIdByTitle(title);
-        choreDbAdapter.deleteChore(choreId);
-        String userId = currentUser.getId();
-        String[] choreIds = DataWrapper.unwrap(userDbAdapter.getUserChoresId(userId));
-        List<String> temp = Arrays.asList(choreIds);
-        temp.remove(choreId);
-        String[] array = (String[]) temp.toArray();
-        String a = DataWrapper.wrap(array);
-        userDbAdapter.updateUserChores(userId, a);
+        choreDbAdapter.updateChore(choreId, "true"); // call deleteChore instead if you want to remove it
+
+        // the below holds logic to delete an attached chore from the user database
+//        String userId = currentUser.getId();
+//        String[] choreIds = DataWrapper.unwrap(userDbAdapter.getUserChoresId(userId));
+//        List<String> temp = Arrays.asList(choreIds);
+//        temp.remove(choreId);
+//        String[] array = (String[]) temp.toArray();
+//        String a = DataWrapper.wrap(array);
+//        userDbAdapter.updateUserChores(userId, a);
     }
 
     public static void addAllowance(String addAmount) {
