@@ -75,9 +75,9 @@ public class ToDoActivity extends AppCompatActivity {
 
                 View choresLayout = getLayoutInflater().inflate(R.layout.chores, null);
                 LinearLayout layout = choresLayout.findViewById(R.id.choresLayout);
-                EditText titleEdit = choresLayout.findViewById(R.id.editTextSimple2);
-                EditText amountEdit = choresLayout.findViewById(R.id.editTextSimple);
-                Spinner dropdown = choresLayout.findViewById(R.id.spinner);
+                EditText titleEdit = choresLayout.findViewById(R.id.titleEditText);
+                EditText amountEdit = choresLayout.findViewById(R.id.amountEditText);
+                Spinner dropdown = choresLayout.findViewById(R.id.frequencySpinner);
 
                 String[] items = {"1 Day", "4 Day", "1 Week"};
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
