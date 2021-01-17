@@ -18,8 +18,8 @@ public class DbAdapter {
 
     public DbAdapter(Context context)
     {
-        accountDbHelper = new AccountDbHelper(context);
         choreDbHelper = new ChoreDbHelper(context);
+        accountDbHelper = new AccountDbHelper(context);
         goalDbHelper = new GoalDbHelper(context);
         userDbHelper = new UserDbHelper(context);
     }
@@ -120,8 +120,7 @@ public class DbAdapter {
         return id;
     }
 
-    public Chore getChoreData(String id)
-    {
+    public Chore getChoreData(String id) {
         SQLiteDatabase db = choreDbHelper.getWritableDatabase();
         String[] columns = {choreDbHelper.UID,choreDbHelper.TITLE,choreDbHelper.DETAILS,choreDbHelper.AMOUNT,choreDbHelper.IS_ACCOMPLISHED};
         Cursor cursor =db.query(choreDbHelper.TABLE_NAME,columns,choreDbHelper.UID + "=" + id,
@@ -134,8 +133,7 @@ public class DbAdapter {
         return new Chore(title, details, PriceFormatter.unformat(amount), Boolean.parseBoolean(isAccomplished));
     }
 
-    public int deleteChore(String id)
-    {
+    public int deleteChore(String id) {
         SQLiteDatabase db = choreDbHelper.getWritableDatabase();
         String[] whereArgs ={id};
 
@@ -143,8 +141,7 @@ public class DbAdapter {
         return  count;
     }
 
-    public int updateChore(String id, String isAccomplished)
-    {
+    public int updateChore(String id, String isAccomplished) {
         SQLiteDatabase db = choreDbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(choreDbHelper.IS_ACCOMPLISHED,isAccomplished);
@@ -170,8 +167,7 @@ public class DbAdapter {
         return id;
     }
 
-    public User getUserData(String id)
-    {
+    public User getUserData(String id) {
         SQLiteDatabase db = userDbHelper.getReadableDatabase();
         String[] columns = {userDbHelper.UID,userDbHelper.PIN,userDbHelper.NAME,
                 userDbHelper.ACCOUNT,userDbHelper.CHORES,userDbHelper.GOAL};
@@ -228,8 +224,7 @@ public class DbAdapter {
         return goal;
     }
 
-    public int deleteUser(String id)
-    {
+    public int deleteUser(String id) {
         SQLiteDatabase db = choreDbHelper.getWritableDatabase();
         String[] whereArgs ={id};
 
@@ -267,8 +262,7 @@ public class DbAdapter {
         return  count;
     }
 
-    public int updateUser(String id, String account, String chores, String goal)
-    {
+    public int updateUser(String id, String account, String chores, String goal) {
         SQLiteDatabase db = userDbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(userDbHelper.ACCOUNT,account);
