@@ -4,15 +4,13 @@ import java.util.*;
 
 public class User {
     String id;
-    String email;
     String pin;
     String name;
     Account account;
     List<Chore> chores;
     Goal goal;
 
-    public User(String email, String pin, String name) {
-        this.email = email;
+    public User(String pin, String name) {
         this.pin = pin;
         this.name = name;
         this.account = new Account();
@@ -20,20 +18,18 @@ public class User {
         this.goal = null;
     }
 
-    public User(String email, String pin, String name, Account account, List<Chore> chores, Goal goal) {
-        this.email = email;
+    public User(String pin, String name, Account account, List<Chore> chores, Goal goal, String id) {
         this.pin = pin;
         this.name = name;
         this.account = account;
         this.chores = chores;
         this.goal = goal;
+        this.id = id;
     }
 
     public String getId() {
         return this.id;
     }
-
-    public String getEmail() { return this.email; }
 
     public String getPin() { return this.pin; }
 

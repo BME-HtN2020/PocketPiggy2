@@ -1,4 +1,4 @@
-package com.example.pocketpiggy;
+package com.example.projectpiggy2;
 
 public class DataWrapper {
     public static String wrap(String[] dataList) {

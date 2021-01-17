@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         if (email.isEmpty() || pin.isEmpty() || name.isEmpty()) {
             // please try again
         } else {
-            long id = dbAdapter.insertUser(email, pin, name);
+            long id = dbAdapter.insertUser(pin, name);
             if (id <= 0) {
                 // unsuccessful write to the database
                 return false;
