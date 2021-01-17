@@ -31,7 +31,7 @@
     <string name="todo_title">’s to-do list</string>
     <string name="icon_todo">to-do</string>
     <string name="icon_home">home</string>
-    <string name="icon_goals">goals</string>
+    <string name="icon_log">log</string>
 
     <string-array name="frequency_array">
         <item>Weekly</item>
