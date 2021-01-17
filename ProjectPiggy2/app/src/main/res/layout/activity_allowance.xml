@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".main.AllowanceActivity">
+    tools:context=".main.AllowanceActivity"
+    android:background="@drawable/background_gradient">
 
     <TextView
         android:id="@+id/allowance_title"
