@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:text="@string/onboarding1"
         android:textColor="@color/text"
-        android:textSize="36sp"
+        android:theme="@style/h2"
         android:gravity="center"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

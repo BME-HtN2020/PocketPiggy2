@@ -14,12 +14,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/allowance_title"
+        android:textColor="@color/text"
+        android:theme="@style/h1"
         app:layout_constraintBottom_toTopOf="@+id/allowance_amount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.252" />
+
 
     <com.santalu.maskara.widget.MaskEditText
         android:id="@+id/allowance_amount"
@@ -45,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="88dp"
         android:text="@string/button_continue"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -72,6 +76,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="15dp"
         android:text="@string/allowance_amount"
+        android:theme="@style/text"
         app:layout_constraintBottom_toTopOf="@+id/allowance_amount"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -83,6 +88,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/allowance_frequency"
+        android:theme="@style/text"
         app:layout_constraintBottom_toTopOf="@+id/allowance_frequency_spinner"
         app:layout_constraintStart_toStartOf="parent" />
 

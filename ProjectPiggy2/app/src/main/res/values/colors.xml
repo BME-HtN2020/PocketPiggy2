@@ -11,7 +11,7 @@
     <color name="colorPrimaryDark">#36B259</color>
     <color name="colorAccent">#FD6FA2</color>
     <color name="text">#434448</color>
-    <color name="textLight"#FFFCF8</color>
+    <color name="textLight">#FFFCF8</color>
     <color name="gradient_background">#F6FFF3</color>
     <color name="button">#78BEFF</color>
     <color name="grey">#EFF5EC</color>
