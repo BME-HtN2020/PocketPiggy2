@@ -33,4 +33,5 @@
     <string name="icon_todo">to-do</string>
     <string name="icon_home">home</string>
     <string name="icon_goals">goals</string>
+    <string name="add">add</string>
 </resources>
