@@ -19,10 +19,12 @@ public class Account {
         this.balance = balance;
     }
 
+    // any modifications to the balance should only occur in the User class
     public void addBalance(double balance) {
         this.balance += balance;
     }
 
+    // any modifications to the balance should only occur in the User Class
     public void withdrawBalance(double balance) {
         this.balance -= balance;
     }

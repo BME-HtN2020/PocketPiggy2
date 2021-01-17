@@ -73,10 +73,11 @@ public class ToDoActivity extends AppCompatActivity {
 //                layout.addView(dropdown);
 //                layout.addView(amountEdit);
 
-                ConstraintLayout layout = findViewById(R.id.choresLayout);
-                EditText titleEdit = findViewById(R.id.editTextSimple2);
-                EditText amountEdit = findViewById(R.id.editTextSimple);
-                Spinner dropdown = findViewById(R.id.spinner);
+                View choresLayout = getLayoutInflater().inflate(R.layout.chores, null);
+                LinearLayout layout = choresLayout.findViewById(R.id.choresLayout);
+                EditText titleEdit = choresLayout.findViewById(R.id.editTextSimple2);
+                EditText amountEdit = choresLayout.findViewById(R.id.editTextSimple);
+                Spinner dropdown = choresLayout.findViewById(R.id.spinner);
 
                 String[] items = {"1 Day", "4 Day", "1 Week"};
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -85,7 +86,6 @@ public class ToDoActivity extends AppCompatActivity {
                 amountEdit.addTextChangedListener(new NumberTextWatcher(amountEdit, "#,###"));
 
                 AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setTitle("Add a new task").setMessage("What do you want to do next?")
                         .setView(layout)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
