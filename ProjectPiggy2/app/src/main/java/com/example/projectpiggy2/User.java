@@ -55,6 +55,9 @@ public class User {
 
     public void assignChore(String title, String details, double amount) {
         Chore chore = new Chore(title, details, amount);
+        if (this.chores == null) {
+            this.chores = new ArrayList<Chore>();
+        }
         this.chores.add(chore);
     }
 

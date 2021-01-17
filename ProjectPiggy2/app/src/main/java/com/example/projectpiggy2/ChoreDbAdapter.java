@@ -43,7 +43,7 @@ public class ChoreDbAdapter extends DbAdapter {
 
     public String getChoreIdByTitle(String title) {
         String[] columns = {UID};
-        Cursor cursor =db.query(TABLE_NAME,columns,TITLE + "=" + title,
+        Cursor cursor = db.query(TABLE_NAME,columns,TITLE + "='" + title + "'",
                 null,null,null,null);
         cursor.moveToNext();
         String id =cursor.getString(cursor.getColumnIndex(UID));

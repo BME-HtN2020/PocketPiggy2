@@ -41,8 +41,10 @@ public class ToDoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do);
 
+        UserController.init(this);
+        UserController.createUser("0000", "Jae");
+
         taskHelper = new TaskDatabaseHelper(this);
-        dbAdapter = new DbAdapter(this);
         TaskList = (ListView) findViewById(R.id.list_to_do);
 
         updateUI();
@@ -104,8 +106,13 @@ public class ToDoActivity extends AppCompatActivity {
         ArrayList<String> taskList = new ArrayList<>();
         List<Chore> choreList = UserController.getCurrentUser().getChores();
 
-        for (int i = 0; i < choreList.size(); i++) {
-            taskList.add(choreList.get(i).getTitle());
+        if (choreList != null) {
+            for (int i = 0; i < choreList.size(); i++) {
+                Chore chore = choreList.get(i);
+                if (!chore.isAccomplished) {
+                    taskList.add(choreList.get(i).getTitle());
+                }
+            }
         }
 
         if (arrAdapter == null) {

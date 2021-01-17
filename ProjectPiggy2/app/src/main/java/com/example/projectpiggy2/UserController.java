@@ -42,7 +42,7 @@ public class UserController {
         String choresId = userDbAdapter.getUserChoresId(currentUser.getId());
         choresId.concat(";" + id);
         userDbAdapter.updateUserChores(currentUser.getId(), choresId);
-        currentUser.assignChore(title, detail, Double.parseDouble(amount));
+        currentUser.assignChore(title, detail, PriceFormatter.unformat(amount));
     }
 
     public static void completeChore(String title) {
