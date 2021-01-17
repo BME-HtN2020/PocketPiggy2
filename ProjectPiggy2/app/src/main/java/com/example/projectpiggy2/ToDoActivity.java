@@ -42,7 +42,6 @@ public class ToDoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_to_do);
 
         UserController.init(this);
-        UserController.createUser("0000", "Jae");
 
         taskHelper = new TaskDatabaseHelper(this);
         TaskList = (ListView) findViewById(R.id.list_to_do);
@@ -94,12 +93,34 @@ public class ToDoActivity extends AppCompatActivity {
         }
     }
 
-    public void deleteTask(View view) {
+    public void completeTask(View view) {
+        AlertDialog.Builder pinDialogBuilder = new AlertDialog.Builder(this);
+        pinDialogBuilder.setTitle("PIN Required");
+        pinDialogBuilder.setMessage("Please enter your PIN");
+        pinDialogBuilder.setCancelable(false);
+        View pinDialog = getLayoutInflater().inflate(R.layout.pin_dialog, null);
+        pinDialogBuilder.setView(pinDialog.findViewById(R.id.pinLayout));
+
+        EditText pinEditText = pinDialog.findViewById(R.id.pinEditText);
+
         View parent = (View) view.getParent();
         TextView taskTextView = (TextView) parent.findViewById(R.id.title_task);
         String task = String.valueOf(taskTextView.getText());
-        UserController.completeChore(task);
-        updateUI();
+
+        pinDialogBuilder.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String enteredPin = pinEditText.getText().toString();
+                if (UserController.getCurrentUser().verify(enteredPin)) {
+                    UserController.completeChore(task);
+                    updateUI();
+                } else {
+                    return;
+                }
+            }
+        });
+
+        pinDialogBuilder.create().show();
     }
 
     private void updateUI() {
