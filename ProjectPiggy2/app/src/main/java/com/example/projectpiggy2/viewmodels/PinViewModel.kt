@@ -104,9 +104,9 @@ class PinViewModel(private val userInfo: UserWrapper): ViewModel() {
             is PinUIEvent.BackPressed -> {
                 _viewState.value = PinViewState()
             }
-             is PinUIEvent.ErrorReset -> {
-                 _viewState.value = _viewState.value!!.copy(loginError = false)
-             }
+            is PinUIEvent.ErrorReset -> {
+                _viewState.value = _viewState.value!!.copy(loginError = false)
+            }
         }
 
 

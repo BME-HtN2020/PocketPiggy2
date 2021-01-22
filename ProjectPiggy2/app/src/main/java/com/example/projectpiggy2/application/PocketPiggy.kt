@@ -9,6 +9,10 @@ import org.koin.core.context.startKoin
 
 class PocketPiggy: Application() {
 
+    /**
+     * Creates the application and creates all of our dependencies
+     * that we can inject anywhere we would like throughout the app
+     */
     override fun onCreate() {
         super.onCreate()
         startKoin {
