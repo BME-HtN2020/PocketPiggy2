@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.projectpiggy2.ParentPinActivity;
 import com.example.projectpiggy2.R;
 import com.example.projectpiggy2.UserController;
+import com.example.projectpiggy2.activities.PinActivity;
 
 public class NameActivity extends AppCompatActivity {
 
@@ -38,7 +39,7 @@ public class NameActivity extends AppCompatActivity {
                 String userName = name.getText().toString();
 
                 // create the intent for parent pin activity
-                Intent parentPinIntent = new Intent(NameActivity.this, ParentPinActivity.class);
+                Intent parentPinIntent = new Intent(NameActivity.this, PinActivity.class);
 
                 // set extras to carry over the name
                 parentPinIntent.putExtra("name", userName);
